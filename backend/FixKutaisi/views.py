@@ -1,8 +1,11 @@
+from pyexpat.errors import messages
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User
+from .models import User, Message
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -19,7 +22,8 @@ def register(request):
         password = request.POST['password']
         user = User.objects.create_user(name, email, password)
         user.save()
-        return HttpResponseRedirect(reverse('login'))
+        login(request, user)
+        return HttpResponseRedirect(reverse('index'))
 
     return render(request, 'signup.html', {
         'user': request.user
@@ -43,8 +47,17 @@ def forgot(request):
     return render(request, 'forgotpassword.html')
 
 
+@login_required
 def contact(request):
-    return render(request, 'contact.html')
+    if request.method == 'POST':
+        message = request.POST['message']
+        Message.objects.create(sender=request.user, content=message)
+    return render(request, 'contact.html', {
+        'user': request.user
+    })
+
+
+@login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))

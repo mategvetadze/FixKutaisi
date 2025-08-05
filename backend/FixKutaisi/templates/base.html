@@ -204,11 +204,14 @@
     <ul class="nav-links">
         <li><a href="{% url 'index' %}" {% block nav_home_active %}{% endblock %}><i class="fas fa-home"></i>
             მთავარი</a></li>
-        <li><a href="{% url 'contact' %}" {% block nav_contact_active %}{% endblock %}>კონტაქტი</a></li>
         {% if user.is_authenticated %}
+            <li><a href="{% url 'contact' %}" {% block nav_contact_active %}{% endblock %}>კონტაქტი</a></li>
             <li><a href="{% url 'logout' %}">გასვლა</a></li>
+
         {% else %}
             <li><a href="{% url 'register' %}" {% block nav_register_active %}{% endblock %}>რეგისტრაცია</a></li>
+            <li><a href="{% url 'login' %}">შესვლა</a></li>
+
         {% endif %}
     </ul>
     <div class="hamburger" onclick="toggleMenu()">
