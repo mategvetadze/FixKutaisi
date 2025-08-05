@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% block title %}მთავარი{% endblock %}
+
+{% block nav_home_active %}class="active"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+{% endblock %}
+
+{% block page_styles %}
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+    z-index: 1;
+}
+
+.main-content {
+    padding-top: 0;
+    height: calc(100vh - 60px);
+    position: relative;
+}
+
+.problem-form {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    width: 90%;
+    max-width: 400px;
+}
+
+.problem-form h3 {
+    margin-bottom: 15px;
+    text-align: center;
+    color: #4caf50;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #4caf50;
+    outline: none;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.floating-label input,
+.floating-label textarea {
+    padding-top: 20px;
+    padding-bottom: 8px;
+}
+
+.floating-label label {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 16px;
+    color: #999;
+    pointer-events: none;
+    background: white;
+    padding: 0 4px;
+    transition: all 0.3s ease;
+}
+
+.floating-label input:focus + label,
+.floating-label input:not(:placeholder-shown) + label,
+.floating-label textarea:focus + label,
+.floating-label textarea:not(:placeholder-shown) + label {
+    top: -5px;
+    left: 8px;
+    font-size: 12px;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.floating-label textarea {
+    resize: vertical;
+}
+
+.anonymous-option {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.anonymous-option label {
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.anonymous-option input[type="checkbox"] {
+    accent-color: #45a049;
+    width: auto;
+}
+
+.form-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.problem-form button {
+    width: 80%;
+    padding: 11px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #f44336, #da190b);
+    color: white;
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #45a049, #4CAF50);
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #da190b, #f44336);
+}
+
+.leaflet-control-geocoder {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px #45a049;
+    padding: 4px;
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.2s ease;
+}
+
+.leaflet-control-geocoder-icon {
+    width: 28px;
+    height: 28px;
+    background-color: #45a049;
+    border-radius: 50%;
+    padding: 6px;
+    transition: background-color 0.3s;
+}
+
+.leaflet-control-geocoder-icon:hover {
+    background-color: #45a049;
+}
+
+.leaflet-control-geocoder-form input {
+    border-radius: 6px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    box-shadow: none;
+    transition: border 0.2s;
+}
+
+.leaflet-control-geocoder-form input:focus {
+    border: 1px solid #45a049;
+    outline: none;
+}
+
+.leaflet-control-geocoder-alternatives {
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+@media (max-width: 480px) {
+    .problem-form {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+
+    .leaflet-control-geocoder {
+        max-width: 90%;
+    }
+}
+{% endblock %}
+
+{% block content %}
+<div id="map"></div>
+
+<!-- Problem Report Form -->
+<div class="problem-form" id="problemForm">
+    <h3>პრობლემის რეპორტი</h3>
+    <form id="reportForm">
+        <div class="form-group floating-label">
+            <input type="text" id="problemTitle" placeholder=" " required/>
+            <label for="problemTitle">პრობლემის სახელი</label>
+        </div>
+
+        <div class="form-group">
+            <select id="problemCategory" required>
+                <option value="">აირჩიეთ კატეგორია</option>
+                <option value="road">გზის პრობლემები</option>
+                <option value="water">წყლის პრობლემები</option>
+                <option value="lighting">განათება</option>
+                <option value="waste">ნაგავი</option>
+                <option value="other">სხვა</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <textarea id="problemDescription" placeholder="დეტალური აღწერა" rows="3" required></textarea>
+        </div>
+
+        <div class="anonymous-option">
+            <label for="reportAnonymously">
+                <i class="fas fa-user-secret" style="margin-right: 5px;"></i>ანონიმურად გაგზავნა
+            </label>
+            <input type="checkbox" id="reportAnonymously" onchange="toggleReporterName()">
+        </div>
+
+        <div class="form-group floating-label">
+            <input type="text" id="reporterName" placeholder=" "/>
+            <label for="reporterName">თქვენი სახელი (არასავალდებულო)</label>
+        </div>
+
+        <div class="form-group">
+            <input type="file" id="problemImage" accept="image/*">
+        </div>
+
+        <div class="form-buttons">
+            <button type="submit" class="btn-submit">დამატება</button>
+            <button type="button" class="btn-cancel" onclick="closeForm()">გაუქმება</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="../static/js/home.js"></script>
+{% endblock %}
