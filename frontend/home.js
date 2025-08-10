@@ -24,10 +24,6 @@ geocoderControl.on('markgeocode', function (e) {
     map.setView(latlng, 16);
 });
 
-
-let problems = [];
-let selectedLocation = null;
-
 const categoryColors = {
     'road': '#ff4444',
     'water': '#4444ff',
@@ -35,6 +31,43 @@ const categoryColors = {
     'waste': '#44ff44',
     'other': '#888888'
 };
+
+let problems = JSON.parse(localStorage.getItem('problems')) || [];
+
+function displayProblem(problem) {
+    const color = categoryColors[problem.category] || '#888888';
+    const marker = L.circleMarker(problem.location, {
+        color: '#fff',
+        fillColor: color,
+        fillOpacity: 0.8,
+        radius: 6,
+        weight: 2
+    }).addTo(map);
+
+    let popupContent = `
+      <div style="font-size: 14px; max-width: 200px;">
+        <b>${problem.title}</b><br>
+        <small>${problem.description}</small><br>
+        <small>დამატებულია: ${problem.reporter}</small>
+    `;
+
+    if (problem.isAnonymous) {
+        popupContent += ` <i class="fas fa-user-secret" style="color: #999; font-size: 12px;" title="ანონიმური რეპორტი"></i>`;
+    }
+
+    popupContent += `<br><i style="color: #999;">${problem.date}</i><br>`;
+
+    if (problem.image) {
+        popupContent += `<img src="${problem.image}" alt="Problem Image" style="max-width: 100%; height: auto; margin-top: 5px; border-radius: 4px;">`;
+    }
+
+    popupContent += `</div>`;
+    marker.bindPopup(popupContent);
+}
+
+problems.forEach(displayProblem);
+
+let selectedLocation = null;
 
 map.on('click', function (e) {
     selectedLocation = e.latlng;
@@ -83,35 +116,8 @@ document.getElementById('reportForm').addEventListener('submit', function (e) {
         };
 
         problems.push(problem);
-
-        const color = categoryColors[problem.category] || '#888888';
-        const marker = L.circleMarker(problem.location, {
-            color: '#fff',
-            fillColor: color,
-            fillOpacity: 0.8,
-            radius: 6,
-            weight: 2
-        }).addTo(map);
-
-        let popupContent = `
-          <div style="font-size: 14px; max-width: 200px;">
-            <b>${problem.title}</b><br>
-            <small>${problem.description}</small><br>
-            <small>დამატებულია: ${problem.reporter}</small>
-        `;
-
-        if (problem.isAnonymous) {
-            popupContent += ` <i class="fas fa-user-secret" style="color: #999; font-size: 12px;" title="ანონიმური რეპორტი"></i>`;
-        }
-
-        popupContent += `<br><i style="color: #999;">${problem.date}</i><br>`;
-
-        if (problem.image) {
-            popupContent += `<img src="${problem.image}" alt="Problem Image" style="max-width: 100%; height: auto; margin-top: 5px; border-radius: 4px;">`;
-        }
-
-        popupContent += `</div>`;
-        marker.bindPopup(popupContent);
+        localStorage.setItem('problems', JSON.stringify(problems)); 
+        displayProblem(problem);
         closeForm();
 
         const reportType = isAnonymous ? 'ანონიმური რეპორტი' : 'რეპორტი';
@@ -136,6 +142,7 @@ function closeForm() {
     reporterNameGroup.style.display = 'block';
     selectedLocation = null;
 }
+
 function toggleMenu() {
     const navLinks = document.querySelector('.nav-links');
     navLinks.classList.toggle('show');
