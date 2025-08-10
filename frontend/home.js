@@ -32,8 +32,14 @@ const categoryColors = {
     'other': '#888888'
 };
 
-let problems = JSON.parse(localStorage.getItem('problems')) || [];
-
+let problems = [];
+fetch('/api/problems')
+    .then(res => res.json())
+    .then(data => {
+        problems = data;
+        problems.forEach(displayProblem);
+    })
+    .catch(err => console.error('Error loading problems:', err));
 function displayProblem(problem) {
     const color = categoryColors[problem.category] || '#888888';
     const marker = L.circleMarker(problem.location, {
@@ -65,7 +71,6 @@ function displayProblem(problem) {
     marker.bindPopup(popupContent);
 }
 
-problems.forEach(displayProblem);
 
 let selectedLocation = null;
 
@@ -94,35 +99,31 @@ document.getElementById('reportForm').addEventListener('submit', function (e) {
     const file = fileInput.files[0];
     const isAnonymous = document.getElementById('reportAnonymously').checked;
 
-    function createProblem(imageDataUrl = null) {
-        let reporterName;
+    problems.push(problem);
+localStorage.setItem('problems', JSON.stringify(problems)); 
+displayProblem(problem);
 
-        if (isAnonymous) {
-            reporterName = 'ანონიმური მომხმარებელი';
-        } else {
-            reporterName = document.getElementById('reporterName').value || 'ანონიმური';
-        }
+fetch('/api/problems', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(problem)
+})
+.then(res => {
+    if (!res.ok) throw new Error('Failed to save problem');
+    return res.json();
+})
+.then(data => {
+    console.log('Saved problem on backend:', data);
+})
+.catch(err => {
+    console.error('Error saving problem:', err);
+});
 
-        const problem = {
-            id: Date.now(),
-            title: document.getElementById('problemTitle').value,
-            category: document.getElementById('problemCategory').value,
-            description: document.getElementById('problemDescription').value,
-            reporter: reporterName,
-            location: selectedLocation,
-            date: new Date().toLocaleDateString('ka-GE'),
-            image: imageDataUrl,
-            isAnonymous: isAnonymous
-        };
+closeForm();
 
-        problems.push(problem);
-        localStorage.setItem('problems', JSON.stringify(problems)); 
-        displayProblem(problem);
-        closeForm();
+const reportType = isAnonymous ? 'ანონიმური რეპორტი' : 'რეპორტი';
+alert(`${reportType} წარმატებით დაემატა!`);
 
-        const reportType = isAnonymous ? 'ანონიმური რეპორტი' : 'რეპორტი';
-        alert(`${reportType} წარმატებით დაემატა!`);
-    }
 
     if (file) {
         const reader = new FileReader();
