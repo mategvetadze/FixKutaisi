@@ -33,8 +33,6 @@ const categoryColors = {
 };
 
 let problems = [];
-
-// Load problems from database on page load
 function loadProblems() {
     fetch('/api/problems')
         .then(res => {
@@ -43,13 +41,11 @@ function loadProblems() {
         })
         .then(data => {
             problems = data;
-            // Clear existing markers first
             map.eachLayer(function(layer) {
                 if (layer instanceof L.CircleMarker) {
                     map.removeLayer(layer);
                 }
             });
-            // Display all problems on map
             problems.forEach(displayProblem);
         })
         .catch(err => {
@@ -96,7 +92,6 @@ map.on('click', function (e) {
         selectedLocation = e.latlng;
         document.getElementById('problemForm').style.display = 'block';
     } else {
-        // Show authentication message for non-authenticated users
         const authMessage = document.getElementById('authMessage');
         if (authMessage) {
             authMessage.style.display = 'block';
@@ -133,7 +128,6 @@ function createProblem(imageData = null) {
         image: imageData
     };
 
-    // Save to database
     fetch('/api/problems', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -145,9 +139,7 @@ function createProblem(imageData = null) {
     })
     .then(data => {
         console.log('Problem saved successfully:', data);
-        // Add the returned problem (with ID) to local array
         problems.push(data);
-        // Display the new problem on map
         displayProblem(data);
 
         const reportType = isAnonymous ? 'ანონიმური რეპორტი' : 'რეპორტი';
@@ -190,7 +182,6 @@ function toggleMenu() {
     navLinks.classList.toggle('show');
 }
 
-// Load problems when page loads
 document.addEventListener('DOMContentLoaded', function() {
     loadProblems();
 });

@@ -32,16 +32,8 @@
             <div class="form-group floating-label" style="position:relative;">
                 <input type="password" id="loginPassword" name="password" placeholder=" " required />
                 <label for="loginPassword">პაროლი</label>
-                <span toggle="#loginPassword" class="toggle-password" style="
-                    position:absolute;
-                    top:50%;
-                    right:10px;
-                    cursor:pointer;
-                    color:grey;
-                    font-size:1rem;
-                    transform:translateY(-50%);
-                ">
-                    <i class="fa fa-eye"></i>
+                <span class="password-toggle" onclick="togglePassword()">
+                    <i class="fa-solid fa-eye" id="toggleIcon"></i>
                 </span>
             </div>
 
@@ -61,6 +53,39 @@
         </form>
     </div>
 </div>
+
+<style>
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: #333;
+}
+</style>
+
+<script>
+function togglePassword() {
+    const passwordField = document.getElementById('loginPassword');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+</script>
 {% endblock %}
 
 {% block extra_js %}

@@ -1,4 +1,4 @@
-<!-- Fixed Template - Using external home.js -->
+
 {% extends 'base.html' %}
 
 {% block title %}მთავარი{% endblock %}
@@ -180,21 +180,22 @@
     }
 
     .auth-btn {
-        background: linear-gradient(135deg, #2196F3, #1976D2);
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        text-decoration: none;
-        display: inline-block;
-        margin: 5px;
-    }
+    background: linear-gradient(135deg,  #45a049, #45a049);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px;
+}
 
-    .auth-btn:hover {
-        background: linear-gradient(135deg, #1976D2, #2196F3);
-    }
+.auth-btn:hover {
+     background: linear-gradient(135deg,  #45a049, #45a049);
+}
 
     .leaflet-control-geocoder {
         background: white;
@@ -237,7 +238,6 @@
         font-size: 14px;
     }
 
-    /* Fix Leaflet Zoom Controls */
     .leaflet-control-zoom {
         border: none !important;
         border-radius: 8px !important;
@@ -278,11 +278,46 @@
         border-radius: 0 0 8px 8px !important;
     }
 
-    /* Ensure proper positioning */
     .leaflet-top.leaflet-left {
         top: 70px !important;
         left: 10px !important;
     }
+    .auth-message .button-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; 
+    flex-wrap: nowrap; 
+}
+
+.auth-message .auth-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 6px 14px; 
+    border: none;
+    border-radius: 6px; 
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px; 
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px; 
+    transition: all 0.3s ease;
+    white-space: nowrap; 
+}
+
+
+.auth-message .auth-btn:hover {
+    background-color: #4caf50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+}
+
+.auth-message .auth-btn:active {
+    transform: translateY(0);
+}
+
 
     @media (max-width: 480px) {
         .problem-form {
@@ -310,7 +345,7 @@
 {% block content %}
     <div id="map"></div>
 
-    <!-- Problem Report Form - Only show for authenticated users -->
+
     {% if user.is_authenticated %}
         <div class="problem-form" id="problemForm">
             <h3>პრობლემის რეპორტი</h3>
@@ -360,16 +395,25 @@
         </div>
     {% endif %}
 
-    <!-- Authentication message for non-authenticated users -->
-    <div class="auth-message" id="authMessage">
-        <h3>ავტორიზაცია საჭიროა</h3>
-        <p>პრობლემის დამატებისათვის გთხოვთ გაიაროთ ავტორიზაცია</p>
-        <a href="{% url 'login' %}" class="auth-btn">შესვლა</a>
-        <a href="{% url 'register' %}" class="auth-btn">რეგისტრაცია</a>
-        <button type="button" class="btn-cancel" onclick="closeAuthMessage()" style="width: 100px; margin-top: 10px; height: 40px">დახურვა</button>
+   <div class="auth-message" id="authMessage">
+    <h3>საჭიროა ავტორიზაცია!</h3>
+    <p>პრობლემის დამატებისათვის გთხოვთ გაიაროთ ავტორიზაცია</p>
+    
+    <div class="button-row">
+        <a href="{% url 'login' %}" class="auth-btn">
+            <i class="fas fa-sign-in-alt"></i> შესვლა
+        </a>
+        <a href="{% url 'register' %}" class="auth-btn">
+            <i class="fas fa-user-plus"></i> რეგისტრაცია
+        </a>
+        <button type="button" class="auth-btn" onclick="closeAuthMessage()">
+            <i class="fas fa-times"></i> დახურვა
+        </button>
     </div>
+</div>
 
-    <!-- Pass user authentication status to JavaScript -->
+
+
     <script>
         window.userAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
 
