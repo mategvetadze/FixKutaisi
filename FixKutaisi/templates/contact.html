@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}კონტაქტი{% endblock %}
+
+{% block nav_contact_active %}class="active"{% endblock %}
+
+{% block page_styles %}
+    .main-content {
+    padding-bottom: 80px;
+    }
+
+    .form-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    }
+
+    .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    transition: all 0.3s ease;
+    resize: vertical;
+    min-height: 100px;
+    }
+
+    .form-group textarea:focus {
+    border-color: #4caf50;
+    outline: none;
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="container form-container">
+        <div class="form-header">
+            <h2>დაგვიკავშირდით</h2>
+        </div>
+        <form id="contactForm" method="post">
+            {% csrf_token %}
+            <div class="form-group floating-label">
+                <textarea id="contactMessage" name="message" placeholder=" " required></textarea>
+                <label for="contactMessage">მესიჯი</label>
+            </div>
+
+            <button type="submit" class="submit-btn">გაგზავნა</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            alert('მადლობა, თქვენი მესიჯი გაგზავნილია!');
+        });
+    </script>
+{% endblock %}

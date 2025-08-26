@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}ავტორიზაცია{% endblock %}
+
+{% block nav_register_active %}class="active"{% endblock %}
+
+{% block content %}
+<div class="container fade-in" style="
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+">
+    <div class="form-header">
+        <h2>ავტორიზაცია</h2>
+    </div>
+    <div class="form-container">
+        <form id="signupForm" class="form" method="post">
+            {% csrf_token %}
+            <div class="form-group floating-label">
+                <input type="text" id="signupName" name="name" placeholder=" " required />
+                <label for="signupName">სახელი და გვარი</label>
+            </div>
+
+            <div class="form-group floating-label">
+                <input type="email" id="signupEmail" name="email" placeholder=" " required />
+                <label for="signupEmail">ელექტრონული ფოსტა</label>
+            </div>
+
+            <div class="form-group floating-label" style="position:relative;">
+                <input type="password" id="loginPassword" name="password" placeholder=" " required />
+                <label for="loginPassword">პაროლი</label>
+                <span class="password-toggle" onclick="togglePassword()">
+                    <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                </span>
+            </div>
+
+            <div class="check-box">
+                <input type="checkbox" id="agreeTerms" name="agree" required />
+                <label for="agreeTerms">ვეთანხმები წესებსა და პირობებს</label>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fa-solid fa-user-plus" style="margin-right: 4px;"></i>
+                რეგისტრაცია
+            </button>
+
+            <div class="switch-form">
+                <p>უკვე გაქვთ ანგარიში? <a href="{% url 'login' %}" class="slide-link" data-slide="slide-right">შესვლა</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: #333;
+}
+</style>
+
+<script>
+function togglePassword() {
+    const passwordField = document.getElementById('loginPassword');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="../static/js/signup.js"></script>
+{% endblock %}
