@@ -30,7 +30,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'FixKutaisi',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +46,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://fixkutaisi.onrender.com"
 ]
 
 ROOT_URLCONF = 'backend.urls'
