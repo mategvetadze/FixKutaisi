@@ -24,7 +24,7 @@ def register(request):
         name = request.POST['name']
         email = request.POST['email']
         password = request.POST['password']
-        user = User.objects.create_user(name, email, password)
+        user = User.objects.create_user(username=name,email=email,password=password)
         user.save()
         login(request, user)
         return HttpResponseRedirect(reverse('index'))

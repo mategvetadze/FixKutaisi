@@ -5,7 +5,7 @@ from django.utils import timezone
 # Create your models here.
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(unique=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=30)
 
