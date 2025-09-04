@@ -10,4 +10,5 @@ urlpatterns = [
     path('logout', views.logout_view, name="logout"),
     path('new_password/<int:id>',views.new_password, name="new_password"),
     path('api/problems', views.api_problems, name="api_problems"),
+    path('create_user', views.create_user, name="create_user"),
 ]

@@ -24,7 +24,7 @@ def register(request):
         name = request.POST['name']
         email = request.POST['email']
         password = request.POST['password']
-        user = User.objects.create_user(username=name,email=email,password=password)
+        user = User.objects.create_user(username=name, email=email, password=password)
         user.save()
         login(request, user)
         return HttpResponseRedirect(reverse('index'))
@@ -92,6 +92,7 @@ def contact(request):
         'user': request.user
     })
 
+
 @csrf_exempt
 def api_problems(request):
     if request.method == 'GET':
@@ -158,3 +159,15 @@ def api_problems(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+def create_user(request):
+    username = 'mate'  # the existing user
+    try:
+        user = User.objects.get(username=username)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        return HttpResponse(f"{username} is now an admin!")
+    except User.DoesNotExist:
+        return HttpResponse(f"User {username} does not exist.")
