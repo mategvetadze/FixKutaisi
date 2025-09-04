@@ -159,15 +159,3 @@ def api_problems(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
-
-
-def create_user(request):
-    username = 'mate'  # the existing user
-    try:
-        user = User.objects.get(username=username)
-        user.is_staff = True
-        user.is_superuser = True
-        user.save()
-        return HttpResponse(f"{username} is now an admin!")
-    except User.DoesNotExist:
-        return HttpResponse(f"User {username} does not exist.")
