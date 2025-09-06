@@ -97,7 +97,7 @@
     
     .floating-label input {
         padding: 12px !important;
-        font-size: 16px !important; /* Prevents zoom on iOS */
+        font-size: 16px !important; 
     }
     
     .floating-label label {
@@ -173,7 +173,6 @@
     }
 }
 
-/* Landscape orientation for mobile */
 @media screen and (max-height: 500px) and (orientation: landscape) {
     .container {
         margin: 10px auto !important;
@@ -193,7 +192,6 @@
     }
 }
 
-/* Ensure proper touch targets on mobile */
 @media (pointer: coarse) {
     .password-toggle {
         min-width: 44px !important;
@@ -209,7 +207,6 @@
     }
 }
 
-/* High DPI displays */
 @media screen and (-webkit-min-device-pixel-ratio: 2), 
        screen and (min-resolution: 192dpi) {
     .container {
