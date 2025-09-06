@@ -70,7 +70,6 @@
     color: #333;
 }
 
-/* Responsive Design */
 @media screen and (max-width: 768px) {
     .container {
         max-width: 90% !important;
