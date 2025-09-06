@@ -67,6 +67,180 @@
 .password-toggle:hover {
     color: #333;
 }
+
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 90% !important;
+        margin: 20px auto !important;
+        padding: 25px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        max-width: 95% !important;
+        margin: 15px auto !important;
+        padding: 20px 15px !important;
+        border-radius: 8px !important;
+    }
+    
+    .form-header h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    .form-group {
+        margin-bottom: 20px !important;
+    }
+    
+    .floating-label input {
+        padding: 12px !important;
+        font-size: 16px !important;
+    }
+    
+    .floating-label label {
+        font-size: 14px !important;
+    }
+    
+    .password-toggle {
+        right: 12px !important;
+        padding: 8px !important;
+    }
+    
+    .checkbox-group {
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        margin-top: 2px !important;
+        flex-shrink: 0 !important;
+        min-width: 18px !important;
+        min-height: 18px !important;
+    }
+    
+    .checkbox-group label {
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+    }
+    
+    .submit-btn {
+        padding: 12px !important;
+        font-size: 16px !important;
+    }
+    
+    .forgot-password {
+        margin-bottom: 15px !important;
+    }
+    
+    .forgot-password a {
+        font-size: 14px !important;
+    }
+    
+    .switch-form p {
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .container {
+        max-width: 98% !important;
+        margin: 10px auto !important;
+        padding: 15px 12px !important;
+    }
+    
+    .form-header h2 {
+        font-size: 1.3rem !important;
+    }
+    
+    .floating-label input {
+        padding: 10px !important;
+        font-size: 15px !important;
+    }
+    
+    .floating-label label {
+        font-size: 13px !important;
+    }
+    
+    .password-toggle {
+        right: 10px !important;
+    }
+    
+    .checkbox-group label {
+        font-size: 13px !important;
+    }
+    
+    .submit-btn {
+        padding: 10px !important;
+        font-size: 15px !important;
+    }
+    
+    .forgot-password a {
+        font-size: 13px !important;
+    }
+    
+    .switch-form p {
+        font-size: 13px !important;
+    }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .container {
+        margin: 10px auto !important;
+        padding: 15px !important;
+    }
+    
+    .form-header {
+        margin-bottom: 15px !important;
+    }
+    
+    .form-group {
+        margin-bottom: 15px !important;
+    }
+    
+    .checkbox-group {
+        margin-bottom: 15px !important;
+    }
+    
+    .submit-btn {
+        margin-bottom: 10px !important;
+    }
+    
+    .forgot-password {
+        margin-bottom: 10px !important;
+    }
+}
+
+@media (pointer: coarse) {
+    .password-toggle {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        min-width: 20px !important;
+        min-height: 20px !important;
+    }
+    
+    .forgot-password a {
+        padding: 8px 0 !important;
+    }
+    
+    .switch-form a {
+        padding: 8px 0 !important;
+    }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2), 
+       screen and (min-resolution: 192dpi) {
+    .container {
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25) !important;
+    }
+}
 </style>
 
 <script>
